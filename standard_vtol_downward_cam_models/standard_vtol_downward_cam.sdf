@@ -1,0 +1,21 @@
+<sdf version='1.6'>
+  <model name='standard_vtol_down_cam'>
+
+    <include>
+      <uri>model://standard_vtol</uri>
+    </include>
+
+    <include>
+      <uri>model://downward_cam</uri>
+      <pose>0 0 0.18 0 1.5708 0</pose>
+    </include>
+    <joint name="camera_joint" type="fixed">
+      <child>camera::link</child>
+      <parent>standard_vtol::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+      </axis>
+    </joint>
+
+  </model>
+</sdf>
