@@ -56,11 +56,41 @@ Notice:<br>
 >>If you don't have installed ros-kinetic, you should install Gazebo7 separately.<br>
 ### (1)install ros-kinetic<br>
   `sudo apt-get install ros-kinetic-desktop-full`<br>
+  
 ### (2)install gazebo7<br>
    `sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'`<br>
    `wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -`<br>
    `sudo apt-get update`<br>
    `sudo apt-get install gazebo7`<br>
    `sudo apt-get install libgazebo7-dev`<br>
+   
 ### (3)download models of sun and ground-plane<br>
 When firstly launch gazebo, it will download these models.<br>
+
+### (4) configs for Gazebo
+   `sudo apt-get install libprotobuf-dev libprotoc-dev protobuf-compiler libeigen3-dev`<br>
+   `cd ~/src/Firmware/Tools/sitl_gazebo`<br>
+   `mkdir Build`<br>
+\# 设置插件的路径以便 Gazebo 能找到模型文件<br>
+   `export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:$HOME/src/Firmware/Tools/sitl_gazebo/Build`<br>
+\# 设置模型路径以便 Gazebo 能找到机型<br>
+   `export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:$HOME/src/Firmware/Tools/sitl_gazebo/models`<br>
+\# 禁用在线模型查找<br>
+   `export GAZEBO_MODEL_DATABASE_URI=""`<br>
+\# 设置 sitl_gazebo 文件夹的路径<br>
+   `export SITL_GAZEBO_PATH=$HOME/src/Firmware/Tools/sitl_gazebo`<br>
+   `cd Build`<br>
+   `cmake ..`<br>
+   `make`<br>
+
+### (5) test the standard vtol model<br>  
+   `cd ~/src/Firmware`<br>
+   `make posix_sitl_default gazebo_standard_vtol`<br>
+   `commander takeoff`<br>
+Notice:
+>>quadrotor vehicle: 
+>>`make posix_sitl_default gazebo`<br>
+
+### (6) mission mode simulation<br>
+Start qgroundcontrol, and the vehicle will connect automatically.<br>
+Set waypoints and mission, the vehicle will fly along the path you set.<br> 
