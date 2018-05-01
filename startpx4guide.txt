@@ -1,0 +1,21 @@
+export GAZEBO_PLUGIN_PATH=${GAZEBO_PLUGIN_PATH}:$HOME/src/Firmware/Tools/sitl_gazebo/Build
+export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:$HOME/src/Firmware/Tools/sitl_gazebo/models
+export GAZEBO_MODEL_DATABASE_URI=""
+export SITL_GAZEBO_PATH=$HOME/src/Firmware/Tools/sitl_gazebo
+
+$(pwd)表示的是当前目录，因此必须在~/src/Firmware下执行如下命令找到ROS package
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
+
+对于全新的Firmware，除了按官网博客make posix_sitl_default gazebo外要做如下修正：
+（1）添加downward_cam
+（2）添加standard_vtol_downward_cam
+（3）添加mavros_posix_tests_standard_vtol_downward_cam.launch，是复制mavros_posix_tests_standard_vtol.launch得来的
+（4）在mavros_posix_tests_standard_vtol_downward_cam.launch中将vehicle设为standard_vtol_downward_cam
+（5）在mavros_posix_tests_standard_vtol_downward_cam.launch中将fcu_url设为upd://:14540@127.0.0.1:14557
+（6）在Firmware/posix-configs/SITL/init/lpe中复制出standard_vtol_downward_cam文件
+（7）在Firmware下运行：
+	export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
+	export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
+（8）启动特定机型：
+	roslaunch px4 mavros_posix_tests_standard_vtol_downward_cam.launch
